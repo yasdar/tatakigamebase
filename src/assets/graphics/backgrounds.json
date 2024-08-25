@@ -1,0 +1,51 @@
+{"frames": {
+
+"BG_Blue0000":
+{
+	"frame": {"x":1,"y":1,"w":641,"h":781},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":641,"h":781},
+	"sourceSize": {"w":641,"h":781}
+},
+"BG_Green0000":
+{
+	"frame": {"x":1286,"y":1,"w":639,"h":781},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":639,"h":781},
+	"sourceSize": {"w":639,"h":781}
+},
+"BG_Purple0000":
+{
+	"frame": {"x":644,"y":783,"w":639,"h":779},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":639,"h":779},
+	"sourceSize": {"w":639,"h":779}
+},
+"BG_Red0000":
+{
+	"frame": {"x":644,"y":1,"w":640,"h":780},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":640,"h":780},
+	"sourceSize": {"w":640,"h":780}
+},
+"BG_Yellow0000":
+{
+	"frame": {"x":1,"y":784,"w":639,"h":779},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":639,"h":779},
+	"sourceSize": {"w":639,"h":779}
+}},
+"meta": {
+	"app": "Adobe Flash Professional",
+	"version": "15.0.1.179",
+	"image": "backgrounds.png",
+	"format": "RGBA8888",
+	"size": {"w":2048,"h":2048},
+	"scale": "1"
+}
+}
