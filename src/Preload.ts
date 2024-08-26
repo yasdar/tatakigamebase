@@ -28,11 +28,33 @@ export class Preload extends Phaser.Scene {
     this.load.on("complete", this.complete, this);
 
     //load agame assets
+    this.load.json("_texts","./assets/texts.json")
+
     this.load.atlas(
       "backgrounds",
       "./assets/graphics/backgrounds.png",
       "./assets/graphics/backgrounds.json"
     );
+
+    this.load.atlas(
+      "backgrounds_1",
+      "./assets/graphics/backgrounds_1.png",
+      "./assets/graphics/backgrounds_1.json"
+    );
+
+    this.load.atlas(
+      "choose_level",
+      "./assets/graphics/choose_level.png",
+      "./assets/graphics/choose_level.json"
+    );
+
+    
+    this.load.atlas(
+      "languages_menu",
+      "./assets/graphics/languages_menu.png",
+      "./assets/graphics/languages_menu.json"
+    );
+    
 
     this.load.image('game_logo','./assets/graphics/game_logo.png')
   }
@@ -45,7 +67,6 @@ export class Preload extends Phaser.Scene {
     this.cameras.main.once(
         Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam:any, effect:any) => {
 		this.scene.start('Home');
-
 	});
     this.cameras.main.fadeOut(300, 0, 0, 0);
 

@@ -21,12 +21,16 @@ export class Home extends Phaser.Scene {
     pop:Phaser.GameObjects.Image;
     txt:Phaser.GameObjects.Text;
 
+
+     data_text :any;
      constructor() {super("Home");}
-     preload(): void {
-        console.log('Home--------------Preload');
-        
-     }
+     preload(): void {}
+
      create(): void {
+      console.log('Home Create ---- GameData.Languge',GameData.Languge);
+
+      this.data_text = this.cache.json.get('_texts')[(GameData.Languge).toLowerCase()];
+      console.log('data_text',this.data_text)
 
         new Bg(this);
 
@@ -35,6 +39,9 @@ export class Home extends Phaser.Scene {
         tween_Elastic(this.title,this);
 
         this.soundBt = this.add.image(0,0,'main_menu','Button_Sound_On0000');
+
+        if(!GameData.SoundEnabled){ this.soundBt.setTexture('main_menu','Button_Sound_Off0000')}
+
         placeIt(this.soundBt,this,0.90,0.08);
         this.soundBt.setInteractive({cursor:"pointer"});
         this.soundBt.on('pointerdown',()=>{
@@ -44,10 +51,10 @@ export class Home extends Phaser.Scene {
         this.playBtn = this.add.image(0,0,'main_menu','Button_Play0000');
         placeIt(this.playBtn,this,0.5,0.55);
         this.playBtn.setInteractive({cursor:"pointer"});
-        this.playBtn.on('pointerdown',()=>{console.log('start game')})
+        this.playBtn.on('pointerdown',()=>{this.openMenu();})
         this.playBtn.on('pointerover',()=>{tween_Rotate(this.playBtn,this);})
-        
-        this.languageBtn = this.add.image(0,0,'main_menu',GameData.CurrentFlagTexture);
+
+        this.languageBtn = this.add.image(0,0,'main_menu','Flag_'+GameData.Languge+'_Round0000');
         placeIt(this.languageBtn,this,0.75,0.55);
         this.languageBtn.setInteractive({cursor:"pointer"});
         this.languageBtn.on('pointerdown',()=>{
@@ -65,7 +72,7 @@ export class Home extends Phaser.Scene {
         placeIt(this.pop,this,0.25,0.88);
         UpDown(this.pop,this,1000);
 
-        this.TXT = this.add.text(0, 0, "Hello!", {
+        this.TXT = this.add.text(0, 0, this.data_text.zebra_0, {
           font: "bold 36px bariol_boldbold",
           color: "#206b8c"
         });
@@ -75,7 +82,11 @@ export class Home extends Phaser.Scene {
 
    }
    openFlagsSelection(){
-    console.log('open flag selections');
+    this.cameras.main.once(
+      Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam:any, effect:any) => {
+      this.scene.start('Flags');
+      });
+      this.cameras.main.fadeOut(300, 0, 0, 0);
    }
    toggleSound(){
     GameData.SoundEnabled = ! GameData.SoundEnabled;
@@ -86,6 +97,15 @@ export class Home extends Phaser.Scene {
           else{
             this.soundBt.setTexture('main_menu','Button_Sound_Off0000')
           }
+   }
+   openMenu(){
+    this.cameras.main.once(
+      Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam:any, effect:any) => {
+      this.scene.start('Menu');
+
+  });
+  this.cameras.main.fadeOut(300, 0, 0, 0);
+
    }
  }
 

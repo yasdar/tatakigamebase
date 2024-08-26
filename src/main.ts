@@ -4,6 +4,8 @@ import { PlayGame } from "./PlayGame";
 import { Preload } from "./Preload";
 import { GameData, mobileAndTabletcheck } from "./utils";
 import { Home } from "./Home";
+import { Flags } from "./Flags";
+import { Menu } from "./Menu";
 
 
 $(function(){ 
@@ -44,7 +46,7 @@ if(mobileAndTabletcheck()){
             height: game_height
         },
         backgroundColor: '#000000',
-        scene: [Boot,Preload,Home,PlayGame]
+        scene: [Boot,Preload,Home,PlayGame,Flags,Menu]
     }
     );
    }

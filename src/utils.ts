@@ -13,7 +13,14 @@ export let shuffleArray = function shuffleArray(array:any) {
   }
 export let GameData:any = {
   SoundEnabled:true,
-  CurrentFlagTexture:'Flag_EN_Round0000'
+  Languge:'EN',
+  LangFromName:{
+    'Flag_EN0000':"en",
+    'Flag_IT0000':"it",
+    'Flag_FR0000':"fr",
+    'Flag_ES0000':"es",
+    'Flag_PT0000':"pt",
+  }//Flag_EN_Round0000
 }
 
 
