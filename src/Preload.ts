@@ -28,7 +28,14 @@ export class Preload extends Phaser.Scene {
     this.load.on("complete", this.complete, this);
 
     //load agame assets
-    this.load.json("_texts","./assets/texts.json")
+    this.load.json("_texts","./assets/texts.json");
+
+    this.load.json("en_letters","./assets/letters/en_letters.json");
+    this.load.json("es_letters","./assets/letters/es_letters.json");
+    this.load.json("fr_letters","./assets/letters/fr_letters.json");
+    this.load.json("it_letters","./assets/letters/it_letters.json");
+    this.load.json("pt_letters","./assets/letters/pt_letters.json");
+
 
     this.load.atlas(
       "backgrounds",
@@ -41,6 +48,26 @@ export class Preload extends Phaser.Scene {
       "./assets/graphics/backgrounds_1.png",
       "./assets/graphics/backgrounds_1.json"
     );
+
+    this.load.atlas(
+      "graphics_1",
+      "./assets/graphics/graphics_1.png",
+      "./assets/graphics/graphics_1.json"
+    );
+    
+
+    this.load.atlas(
+      "letters_1",
+      "./assets/graphics/letters_1.png",
+      "./assets/graphics/letters_1.json"
+    );
+
+    this.load.atlas(
+      "letters_2",
+      "./assets/graphics/letters_2.png",
+      "./assets/graphics/letters_2.json"
+    );
+    
 
     this.load.atlas(
       "choose_level",
@@ -62,6 +89,8 @@ export class Preload extends Phaser.Scene {
     alert("game say : OnError  :" + error.url);
   }
   create(): void {
+
+    GameData.gameSize={width:this.cameras.main.width,height:this.cameras.main.height},
 
     //scene transtion with fade out
     this.cameras.main.once(

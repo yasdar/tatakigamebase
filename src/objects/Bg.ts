@@ -1,5 +1,5 @@
 import 'phaser';
- /* great or wrong */
+
 export class Bg extends Phaser.GameObjects.Container {
    
   base:Phaser.GameObjects.Image;

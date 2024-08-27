@@ -12,6 +12,7 @@ export let shuffleArray = function shuffleArray(array:any) {
     return array;
   }
 export let GameData:any = {
+  gameSize:{width:0,height:0},
   SoundEnabled:true,
   Languge:'EN',
   LangFromName:{
@@ -20,7 +21,12 @@ export let GameData:any = {
     'Flag_FR0000':"fr",
     'Flag_ES0000':"es",
     'Flag_PT0000':"pt",
-  }//Flag_EN_Round0000
+  },
+  MenuPage:0,
+  currentLevel:22,
+  playedLevel:1,
+  currentLetter:''
+
 }
 
 
