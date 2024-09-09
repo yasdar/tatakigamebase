@@ -119,7 +119,7 @@ export class Scrollable extends Phaser.GameObjects.Container {
 updateLevels(){
     console.log(' --- updateLevels ---')
     for (let l:number = 0 ; l <GameData.currentLevel; l++){
-        console.log("voila",l);
+       // console.log("voila",l);
      
         
         if(l < GameData.playedLevel){

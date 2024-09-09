@@ -2,10 +2,11 @@ import $ from "jquery";
 import { Boot } from "./Boot";
 import { PlayGame } from "./PlayGame";
 import { Preload } from "./Preload";
-import { GameData, mobileAndTabletcheck } from "./utils";
+import { GameData, getLevels, getSavedLanguage, mobileAndTabletcheck } from "./utils";
 import { Home } from "./Home";
 import { Flags } from "./Flags";
 import { Menu } from "./Menu";
+import { completeLetterScreen } from "./completeLetterScreen";
 
 
 $(function(){ 
@@ -29,13 +30,20 @@ function checkScreenRotation(){
 function startGame(){
     
     //create the game
-console.log('start game now');
+
+getSavedLanguage();
+getLevels();
+console.log('start game now',GameData.Languge);
+console.log('currentLevel',GameData.currentLevel);
+console.log('GameData.playedLevel',GameData.playedLevel);
+
+
 let game_width = 640;
 let game_height = 900;
-if(mobileAndTabletcheck()){
+/*if(mobileAndTabletcheck()){
   game_width = window.innerWidth;
   game_height = window.innerHeight;
-}
+}*/
       new Phaser.Game(
         {
         scale: {
@@ -46,7 +54,7 @@ if(mobileAndTabletcheck()){
             height: game_height
         },
         backgroundColor: '#000000',
-        scene: [Boot,Preload,Home,PlayGame,Flags,Menu]
+        scene: [Boot,Preload,Home,PlayGame,Flags,Menu,completeLetterScreen]
     }
     );
    }

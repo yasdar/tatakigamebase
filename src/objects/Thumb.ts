@@ -1,5 +1,5 @@
 import 'phaser';
-import { GameData } from '../utils';
+import { GameData, GameObj } from '../utils';
 
 export class Thumb extends Phaser.GameObjects.Container {
    
@@ -38,7 +38,7 @@ export class Thumb extends Phaser.GameObjects.Container {
         this.back.setInteractive({cursor:'pointer'});
           this.back.on('pointerdown',()=>{
             if(this.txt.visible){
-              console.log('playing now ',this.id);
+             // console.log('playing now ',this.id);
               GameData.currentLetter = this.id.charAt(1);
               //go to play screen
               this.goPlay();
@@ -55,13 +55,14 @@ export class Thumb extends Phaser.GameObjects.Container {
     unlock(){//ovrir
       if(!this.txt.visible){
         this.txt.setVisible(true);
-        console.log('activate',this.id)
+        //console.log('activate',this.id)
         this.back.setTexture('choose_level','LetterIcon_Back_Unlocked0000');
        
       }
     
     }
    goPlay(){
+    if(GameData.SoundEnabled && GameData.UserInteract){GameObj[1].play();}
       this.scene.cameras.main.once(
          Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam:any, effect:any) => {
          this.scene.scene.start('PlayGame');

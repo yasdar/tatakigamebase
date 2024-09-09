@@ -1,6 +1,6 @@
 import 'phaser';
 
-import { click_Anim, GameData, placeIt, tween_Elastic, tween_ElasticY, tween_Rotate, UpDown} from "./utils";
+import { click_Anim, GameData, placeIt, saveLanguage, tween_Elastic, tween_ElasticY, tween_Rotate, UpDown} from "./utils";
 import { Bg } from './objects/Bg';
 
 export class Flags extends Phaser.Scene {
@@ -68,7 +68,7 @@ export class Flags extends Phaser.Scene {
     TXT.setPosition(img.x,img.y-img.displayHeight*0.7);
     img.on('pointerdown',()=>{this.selectFlag(img)});
     //show current flag hilight
-    if(frameName.indexOf(GameData.Languge)!= -1){
+    if(frameName.indexOf((GameData.Languge).toUpperCase())!= -1){
         this.cadre_flag = this.add.image(0,0,'languages_menu','Selection0000');
         this.cadre_flag.setPosition(img.x,img.y);
     }
@@ -85,6 +85,7 @@ export class Flags extends Phaser.Scene {
     //get corret path
     let _name = GameData.LangFromName[this.currentFlagFrameName]+"_sounds";
     GameData.Languge = (GameData.LangFromName[this.currentFlagFrameName]).toUpperCase();
+    saveLanguage();
     //load the assets
     this.load.audioSprite('sfx_'+_name, 'assets/audio/words/'+_name+'.json', [
         'assets/audio/words/en_sounds.ogg'

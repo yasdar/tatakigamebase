@@ -55,7 +55,12 @@ export class Preload extends Phaser.Scene {
       "./assets/graphics/graphics_1.json"
     );
     
-
+    this.load.atlas(
+      "pictures_1",
+      "./assets/graphics/pictures_1.png",
+      "./assets/graphics/pictures_1.json"
+    );
+    
     this.load.atlas(
       "letters_1",
       "./assets/graphics/letters_1.png",
@@ -83,7 +88,13 @@ export class Preload extends Phaser.Scene {
     );
     
 
-    this.load.image('game_logo','./assets/graphics/game_logo.png')
+    this.load.image('game_logo','./assets/graphics/game_logo.png');
+
+    this.load.audio('MainLoop','./assets/audio/MainLoop.mp3');
+    this.load.audio('tap','./assets/audio/tap.mp3');
+    //this.load.audioSprite('en_sounds', 'assets/audio/words/en_sounds.json','assets/audio/words/en_sounds.mp3');
+    //this.load.audioSprite('en_fx_mixdown', 'assets/audio/words/en_fx_mixdown.json','assets/audio/words/en_sounds.mp3');
+    
   }
   OnError(error: any) {
     alert("game say : OnError  :" + error.url);
@@ -91,7 +102,6 @@ export class Preload extends Phaser.Scene {
   create(): void {
 
     GameData.gameSize={width:this.cameras.main.width,height:this.cameras.main.height},
-
     //scene transtion with fade out
     this.cameras.main.once(
         Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam:any, effect:any) => {

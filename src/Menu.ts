@@ -1,6 +1,6 @@
 import 'phaser';
 
-import { click_Anim, GameData, placeIt, tween_Elastic, tween_ElasticY, tween_Rotate, UpDown} from "./utils";
+import { click_Anim, GameData, GameObj, placeIt} from "./utils";
 import { Bg } from './objects/Bg';
 import { Scrollable } from './Scrollable';
 
@@ -28,18 +28,7 @@ export class Menu extends Phaser.Scene {
 
       //scrollable menu
       this.scrollable = new Scrollable(this);
-      this.scrollable.makeThumbs([
-        "Aa", "Bb", "Cc",
-        "Dd", "Ee", "Ff",
-        "Gg", "Hh", "Ii",
-        "Jj", "Kk", "Ll",
-        
-        "Mm", "Nn", "Oo",
-        "Pp", "Qq", "Rr",
-        "Ss", "Tt", "Uu",
-        "Vv", "Ww", "Xx",
-        
-        "Yy", "Zz"]);
+      this.scrollable.makeThumbs(GameData.levelsOrder);
 
         this.scrollable.MovmentC = GameData.MenuPage;
         this.scrollable.movePage(0);
@@ -100,8 +89,15 @@ export class Menu extends Phaser.Scene {
     }
     toggleSound(){
         GameData.SoundEnabled = ! GameData.SoundEnabled;
-              if(GameData.SoundEnabled){this.soundBt.setTexture('choose_level','Button_Sound_On0000')}
-              else{this.soundBt.setTexture('choose_level','Button_Sound_Off0000')}
+             
+              if(GameData.SoundEnabled && GameData.UserInteract){
+                this.soundBt.setTexture('choose_level','Button_Sound_On0000')
+                GameObj[0].play();
+              }
+              else{
+                this.soundBt.setTexture('choose_level','Button_Sound_Off0000')
+                GameObj[0].pause();
+              }
        }
 
     backHome(){

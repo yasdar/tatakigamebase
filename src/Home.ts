@@ -1,6 +1,6 @@
 import 'phaser';
 
-import { click_Anim, GameData, placeIt, tween_Elastic, tween_ElasticY, tween_Rotate, UpDown} from "./utils";
+import { click_Anim, GameData, GameObj, placeIt, tween_Elastic, tween_ElasticY, tween_Rotate, UpDown} from "./utils";
 import { Bg } from './objects/Bg';
 
 export class Home extends Phaser.Scene {
@@ -27,7 +27,11 @@ export class Home extends Phaser.Scene {
      preload(): void {}
 
      create(): void {
-      console.log('Home Create ---- GameData.Languge',GameData.Languge);
+      console.log('Home Create v2 ---- GameData.Languge',GameData.Languge);
+
+
+      GameObj[GameObj.length] = this.sound.add('MainLoop');//sound at 0
+      GameObj[GameObj.length] = this.sound.add('tap');//sound at 1
 
       this.data_text = this.cache.json.get('_texts')[(GameData.Languge).toLowerCase()];
       console.log('data_text',this.data_text)
@@ -51,13 +55,17 @@ export class Home extends Phaser.Scene {
         this.playBtn = this.add.image(0,0,'main_menu','Button_Play0000');
         placeIt(this.playBtn,this,0.5,0.55);
         this.playBtn.setInteractive({cursor:"pointer"});
-        this.playBtn.on('pointerdown',()=>{this.openMenu();})
+        this.playBtn.on('pointerdown',()=>{
+          if(GameData.SoundEnabled && GameData.UserInteract){GameObj[1].play();}
+          this.openMenu();
+        })
         this.playBtn.on('pointerover',()=>{tween_Rotate(this.playBtn,this);})
 
-        this.languageBtn = this.add.image(0,0,'main_menu','Flag_'+GameData.Languge+'_Round0000');
+        this.languageBtn = this.add.image(0,0,'main_menu','Flag_'+(GameData.Languge).toUpperCase()+'_Round0000');
         placeIt(this.languageBtn,this,0.75,0.55);
         this.languageBtn.setInteractive({cursor:"pointer"});
         this.languageBtn.on('pointerdown',()=>{
+          if(GameData.SoundEnabled && GameData.UserInteract){GameObj[1].play();}
           click_Anim(this.languageBtn,this,this.openFlagsSelection.bind(this));
         })
 
@@ -80,6 +88,18 @@ export class Home extends Phaser.Scene {
         placeIt(this.TXT,this,0.2,0.88);
         UpDown(this.TXT,this,1000);
 
+
+        this.input.on('pointerdown',()=>{
+          GameData.UserInteract = true;
+          this.input.removeAllListeners();
+          if(GameData.SoundEnabled &&  !GameObj[0].isPlaying){
+            GameObj[0].play();
+          }
+        });
+
+         /*  let s = this.sound.add('');
+s.isPlaying*/
+
    }
    openFlagsSelection(){
     this.cameras.main.once(
@@ -91,14 +111,17 @@ export class Home extends Phaser.Scene {
    toggleSound(){
     GameData.SoundEnabled = ! GameData.SoundEnabled;
 
-          if(GameData.SoundEnabled){
-            this.soundBt.setTexture('main_menu','Button_Sound_On0000')
+          if(GameData.SoundEnabled && GameData.UserInteract){
+            this.soundBt.setTexture('main_menu','Button_Sound_On0000');
+            GameObj[0].play();
           }
           else{
-            this.soundBt.setTexture('main_menu','Button_Sound_Off0000')
+            this.soundBt.setTexture('main_menu','Button_Sound_Off0000');
+            GameObj[0].pause();
           }
    }
    openMenu(){
+   
     this.cameras.main.once(
       Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam:any, effect:any) => {
       this.scene.start('Menu');

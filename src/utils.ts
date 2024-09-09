@@ -11,7 +11,11 @@ export let shuffleArray = function shuffleArray(array:any) {
     }
     return array;
   }
+  export let GameObj:Array<any>=[];
+
 export let GameData:any = {
+  equa:{case:'',X:0,Y:0,pente:0,ori:0},
+  UserInteract:false,
   gameSize:{width:0,height:0},
   SoundEnabled:true,
   Languge:'EN',
@@ -23,9 +27,33 @@ export let GameData:any = {
     'Flag_PT0000':"pt",
   },
   MenuPage:0,
-  currentLevel:22,
-  playedLevel:1,
-  currentLetter:''
+  currentLevel:1,
+  playedLevel:0,
+  currentLetter:'',
+  levelsOrder:[
+    "Aa", "Bb", "Cc",
+    "Dd", "Ee", "Ff",
+    "Gg", "Hh", "Ii",
+    "Jj", "Kk", "Ll",
+    
+    "Mm", "Nn", "Oo",
+    "Pp", "Qq", "Rr",
+    "Ss", "Tt", "Uu",
+    "Vv", "Ww", "Xx",
+    
+    "Yy", "Zz"],
+    levelsIndex:[
+      "a", "b", "c",
+      "d", "e", "f",
+      "g", "h", "i",
+      "j", "k", "l",
+      
+      "m", "n", "o",
+      "p", "q", "r",
+      "s", "t", "u",
+      "v", "w", "x",
+      
+      "y", "z"]
 
 }
 
@@ -73,8 +101,94 @@ export const click_Anim = (obg:any,_scene:any,callBack:Function)=> {
   })
 }
 
+export const tween_EndOf_letter = (top:any,back:any,stars:any,_scene:any)=> {
+  _scene.tweens.add({
+    targets:[top,back],
+    duration:300,
+    delay:1000,
+    scaleY:0.1,
+    scaleX:0.1,
+    alpha:0,
+    ease:Phaser.Math.Easing.Bounce
+  })
 
+  _scene.tweens.add({
+    targets:stars,
+    duration:300,
+    delay:1300,
+    alpha:0,
+    ease:Phaser.Math.Easing.Bounce
+  })
+}
 
+export const tween_Rays1 = (obj:any,_scene:any,_angle:number)=> {
+  _scene.tweens.add({
+    targets:obj,
+    duration:1200,
+    angle:_angle,
+    alpha:0,
+    yoyo:true,
+    repeat:-1,
+    ease:Phaser.Math.Easing.Linear
+  })
+}
+export const tween_Rays2 = (obj:any,_scene:any)=> {
+  _scene.tweens.add({
+    targets:obj,
+    duration:500,
+    alpha:0,
+    yoyo:true,
+    repeat:-1,
+    ease:Phaser.Math.Easing.Linear
+  })
+}
+
+export const tween_complete_letter = (top:any,back:any,_scene:any)=> {
+  _scene.tweens.add({
+    targets:[top,back],
+    duration:300,
+    delay:600,
+    scaleY:1.1,
+    scaleX:1.1,
+    yoyo:true,
+    ease:Phaser.Math.Easing.Bounce
+  })
+  
+};
+
+export const tween_complete_stars = (A:Array<any>,_scene:any)=> {
+  _scene.tweens.add({
+    targets:[A[0],A[3]],
+    duration:300,
+    delay:1000,
+    x:A[0].x-32,
+    y:A[0].y-24,
+    angle:30,
+    yoyo:true,
+    ease:Phaser.Math.Easing.Bounce
+  })
+
+  _scene.tweens.add({
+    targets:[A[1],A[4]],
+    duration:300,
+    delay:1000,
+    y:A[1].y+16,
+    yoyo:true,
+    ease:Phaser.Math.Easing.Bounce
+  })
+
+  _scene.tweens.add({
+    targets:[A[2],A[5]],
+    duration:300,
+    delay:1000,
+    x:A[2].x+32,
+    y:A[2].y-28,
+    angle:-30,
+    yoyo:true,
+    ease:Phaser.Math.Easing.Bounce
+  })
+  
+};
 export const tween_Rotate = (obg:any,_scene:any)=> {
 
   if(obg.angle != 0){return;}
@@ -117,4 +231,143 @@ export const UpDown = (obg:any,_scene:any,_delay:number)=> {
     //repeatDelay:100,
     ease:Phaser.Math.Easing.Linear
   })
+}
+
+export const tween_small_star = (obg:Phaser.GameObjects.Image,_scene:any)=> {
+   
+  _scene.tweens.add({
+    targets:obg,
+    duration:400,
+    scaleY:1.1,
+    scaleX:1.1,
+    yoyo:true,
+    repeat:-1,
+    ease:Phaser.Math.Easing.Linear
+  })
+
+  _scene.tweens.add({
+    targets:obg,
+    duration:800,
+    angle:10,
+    yoyo:true,
+    repeat:-1,
+    ease:Phaser.Math.Easing.Linear
+  })
+
+}
+
+
+export const tween_big_star = (obg:Phaser.GameObjects.Image,_target:Phaser.GameObjects.Image,_scene:any)=> {
+   
+  _scene.tweens.add({
+    targets:obg,
+    duration:100,
+    scaleY:1.1,
+    scaleX:1.1,
+    angle:-15,
+    ease:Phaser.Math.Easing.Linear
+  })
+
+  _scene.tweens.add({
+    targets:obg,
+    duration:400,
+    delay:200,
+    x:_target.x,
+    y:_target.y,
+    angle:359,
+    onComplete:()=>{ obg.setScale(1,1); obg.setAngle(0); obg.setTexture('graphics_1','Star_GUI_White0000');},
+    ease:Phaser.Math.Easing.Linear
+  })
+
+
+  _scene.tweens.add({
+    targets:obg,
+    duration:200,
+    delay:700,
+    scaleY:1.1,
+    scaleX:1.1,
+    yoyo:true,
+    ease:Phaser.Math.Easing.Linear,
+    onStart:()=>{
+      obg.setTexture('graphics_1','Star_GUI0000');
+    }
+  })
+    
+}
+
+
+
+export const tween_shine = (obg:Phaser.GameObjects.Container,_target:Phaser.GameObjects.Image,_scene:any)=> {
+
+  obg.setPosition(_target.x,_target.y);
+  obg.setScale(0.6);
+  
+  _scene.tweens.add({
+    targets:obg,
+    duration:200,
+    alpha:1,
+    scaleY:1,
+    scaleX:1,
+    onUpdate:()=>{
+      obg.getAll().forEach((_shine:any)=>{
+        _shine.setAngle(_shine.angle+3);
+      })
+    },
+    ease:Phaser.Math.Easing.Linear
+  })
+
+
+  _scene.tweens.add({
+    targets:obg,
+    duration:400,
+    delay:200,
+    alpha:0,
+    ease:Phaser.Math.Easing.Linear
+  })
+    
+}
+
+
+
+export const resetLevels = ()=> {
+  GameData.playedLevel = 0;
+  GameData.currentLevel = 1;
+
+  localStorage.setItem("playedLevel", "0");
+  localStorage.setItem("currentLevel", "1");
+
+}
+
+export const IncreaseLevels =  ()=> {
+  GameData.playedLevel = GameData.currentLevel;
+  GameData.currentLevel = GameData.currentLevel+1;
+
+  localStorage.setItem("playedLevel", (GameData.playedLevel).toString());
+  localStorage.setItem("currentLevel", (GameData.currentLevel).toString());
+}
+
+
+export const getLevels =  ()=> {
+  if(localStorage.getItem("playedLevel")){
+    GameData.playedLevel = Number(localStorage.getItem("playedLevel"));
+    GameData.currentLevel = Number(localStorage.getItem("currentLevel"));
+  }else{
+    resetLevels();
+  }
+}
+
+export const saveLanguage = ()=>{
+  console.log('save now',GameData.Languge)
+  localStorage.setItem("Languge", (GameData.Languge).toString());
+}
+
+export const getSavedLanguage = ()=>{
+  if( localStorage.getItem("Languge")){
+    GameData.Languge = localStorage.getItem("Languge"); 
+  }else{
+    //get default brwoser language
+    GameData.Languge = (navigator.language).substring(0,2);
+    GameData.Languge.toUpperCase();
+  }
+  
 }
