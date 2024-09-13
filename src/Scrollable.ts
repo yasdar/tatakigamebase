@@ -125,7 +125,8 @@ updateLevels(){
         if(l < GameData.playedLevel){
             this.AllThumbs[l].stars.setVisible(true);
         }
-        this.AllThumbs[l].unlock();
+        
+        if(this.AllThumbs[l]){this.AllThumbs[l].unlock();}
     }
     
 }
