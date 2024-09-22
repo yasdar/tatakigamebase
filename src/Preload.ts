@@ -1,6 +1,6 @@
 import "phaser";
 
-import { GameData } from "./utils";
+import { all_audios, formatJson, GameData } from "./utils";
 import { Bg } from "./objects/Bg";
 
 export class Preload extends Phaser.Scene {
@@ -60,6 +60,12 @@ export class Preload extends Phaser.Scene {
       "./assets/graphics/pictures_1.png",
       "./assets/graphics/pictures_1.json"
     );
+
+    this.load.atlas(
+      "pictures_2",
+      "./assets/graphics/pictures_2.png",
+      "./assets/graphics/pictures_2.json"
+    );
     
     this.load.atlas(
       "letters_1",
@@ -87,19 +93,57 @@ export class Preload extends Phaser.Scene {
       "./assets/graphics/languages_menu.json"
     );
     
-
     this.load.image('game_logo','./assets/graphics/game_logo.png');
+
 
     this.load.audio('MainLoop','./assets/audio/MainLoop.mp3');
     this.load.audio('tap','./assets/audio/tap.mp3');
-    //this.load.audioSprite('en_sounds', 'assets/audio/words/en_sounds.json','assets/audio/words/en_sounds.mp3');
-    //this.load.audioSprite('en_fx_mixdown', 'assets/audio/words/en_fx_mixdown.json','assets/audio/words/en_sounds.mp3');
+
+    this.load.audio('Collect Item','./assets/audio/Collect Item.mp3');
+    this.load.audio('Small Success','./assets/audio/Small Success.mp3');
+    this.load.audio('restart','./assets/audio/restart.mp3');
+    this.load.audio('kids_cheers','./assets/audio/kids_cheers.mp3');
+
     
+
+      
+      let l:string = GameData.Languge.toLowerCase();
+      this.load.audioSprite(
+       l+'_fx_mixdown', 
+        'assets/audio/words/'+l+'_fx_mixdown.json',
+          'assets/audio/words/'+l+'_sounds.mp3'
+      );
+      
   }
   OnError(error: any) {
     alert("game say : OnError  :" + error.url);
   }
   create(): void {
+
+    
+
+
+    //formatJson()
+
+
+
+/*let a=  this.sound.add('MainLoop',{volume:0.5});
+a.volume = 0.5;*/
+
+    all_audios['MainLoop'] =  this.sound.add('MainLoop',{volume:0.33});
+    all_audios['tap'] =  this.sound.add('tap');
+
+   
+    all_audios['restart'] =  this.sound.add('restart');
+    all_audios['Collect_Item'] =  this.sound.add('Collect Item');
+    all_audios['Small_Success'] =  this.sound.add('Small Success');
+    all_audios['kids_cheers'] =  this.sound.add('kids_cheers');
+
+
+ 
+
+
+
 
     GameData.gameSize={width:this.cameras.main.width,height:this.cameras.main.height},
     //scene transtion with fade out

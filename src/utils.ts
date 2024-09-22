@@ -19,6 +19,7 @@ export let GameData:any = {
   gameSize:{width:0,height:0},
   SoundEnabled:true,
   Languge:'EN',
+  maxletter:26,
   LangFromName:{
     'Flag_EN0000':"en",
     'Flag_IT0000':"it",
@@ -151,7 +152,8 @@ export const tween_complete_letter = (top:any,back:any,_scene:any)=> {
     scaleY:1.1,
     scaleX:1.1,
     yoyo:true,
-    ease:Phaser.Math.Easing.Bounce
+    ease:Phaser.Math.Easing.Bounce,
+    onComplete:()=>{}
   })
   
 };
@@ -166,6 +168,7 @@ export const tween_complete_stars = (A:Array<any>,_scene:any)=> {
     angle:30,
     yoyo:true,
     ease:Phaser.Math.Easing.Bounce
+    
   })
 
   _scene.tweens.add({
@@ -275,7 +278,12 @@ export const tween_big_star = (obg:Phaser.GameObjects.Image,_target:Phaser.GameO
     x:_target.x,
     y:_target.y,
     angle:359,
-    onComplete:()=>{ obg.setScale(1,1); obg.setAngle(0); obg.setTexture('graphics_1','Star_GUI_White0000');},
+    onComplete:()=>{ 
+      obg.setScale(1,1); 
+      obg.setAngle(0); 
+      obg.setTexture('graphics_1','Star_GUI_White0000');
+      playAudio('Collect_Item');
+    },
     ease:Phaser.Math.Easing.Linear
   })
 
@@ -342,6 +350,8 @@ export const IncreaseLevels =  ()=> {
   GameData.playedLevel = GameData.currentLevel;
   GameData.currentLevel = GameData.currentLevel+1;
 
+  if(GameData.currentLevel > GameData.maxletter){GameData.currentLevel = GameData.maxletter};
+
   localStorage.setItem("playedLevel", (GameData.playedLevel).toString());
   localStorage.setItem("currentLevel", (GameData.currentLevel).toString());
 }
@@ -361,13 +371,84 @@ export const saveLanguage = ()=>{
   localStorage.setItem("Languge", (GameData.Languge).toString());
 }
 
+
+const supportedLanguages:any = {
+	en:"english",
+	fr:"french",
+	it:"italian",
+	pt:"portuguese",
+	es:"spanish"
+};
+
 export const getSavedLanguage = ()=>{
   if( localStorage.getItem("Languge")){
     GameData.Languge = localStorage.getItem("Languge"); 
   }else{
     //get default brwoser language
     GameData.Languge = (navigator.language).substring(0,2);
-    GameData.Languge.toUpperCase();
+    GameData.Languge = GameData.Languge.toUpperCase();
+
+    if( supportedLanguages[GameData.Languge] == undefined ){
+      console.log('unsupported Language',GameData.Languge);
+      GameData.Languge = "EN";
+      console.log('use defualt Language',GameData.Languge)
+    }
+
+
+   
   }
   
+}
+
+export let all_audios:any={};
+
+export const playAudio =  (audioName:string)=> {
+  if(GameData.SoundEnabled && GameData.UserInteract){
+
+    if(audioName == 'MainLoop' && all_audios[audioName].isPaused){
+      all_audios[audioName].resume();
+    }
+    else{
+      all_audios[audioName].play();
+    }
+  }
+}
+
+
+export const stopAudio =  (audioName:string)=> {
+  if(audioName == 'MainLoop' && !all_audios[audioName].isPaused){
+    all_audios[audioName].pause();
+  }else{
+    all_audios[audioName].stop();
+  }
+   
+}
+
+export const formatJson = (data:any)=>{
+  //console.log(Object.keys(data));
+  let _data:any = {
+    "spritemap": {}
+  }
+  let a2:Array<any>=[];
+  let a1 = Object.keys(data);
+
+  a1.forEach((item:string)=>{
+   /* a2.push(
+      {
+      "start": data[item][0],
+      "end": data[item][1],
+      "loop": false
+      }
+    );*/
+    //console.log(data[item])
+
+    _data.spritemap[item] = {
+      "start": data[item][0],
+      "end": data[item][1],
+      "loop": false
+      }
+  });
+
+  
+  console.log('voila',_data);
 }

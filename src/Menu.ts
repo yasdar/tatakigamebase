@@ -1,6 +1,6 @@
 import 'phaser';
 
-import { click_Anim, GameData, GameObj, placeIt} from "./utils";
+import { click_Anim, GameData, GameObj, placeIt, playAudio, stopAudio} from "./utils";
 import { Bg } from './objects/Bg';
 import { Scrollable } from './Scrollable';
 
@@ -20,6 +20,8 @@ export class Menu extends Phaser.Scene {
      constructor() {super("Menu");}
      preload(): void {}
      create(): void {
+
+      
 
         let bg = new Bg(this);
         bg.base.setTexture('backgrounds_1','BG_Red0000');
@@ -42,6 +44,7 @@ export class Menu extends Phaser.Scene {
         placeIt(this.homeBtn,this,0.1,0.07);
         this.homeBtn.setInteractive({cursor:"pointer"});
         this.homeBtn.on('pointerdown',()=>{
+          playAudio('tap');
           click_Anim(this.homeBtn,this,this.backHome.bind(this));
         })
 
@@ -50,6 +53,7 @@ export class Menu extends Phaser.Scene {
         placeIt(this.soundBt,this,0.90,0.08);
         this.soundBt.setInteractive({cursor:"pointer"});
         this.soundBt.on('pointerdown',()=>{
+          playAudio('tap');
           click_Anim(this.soundBt,this,this.toggleSound.bind(this));
         })
 
@@ -92,11 +96,11 @@ export class Menu extends Phaser.Scene {
              
               if(GameData.SoundEnabled && GameData.UserInteract){
                 this.soundBt.setTexture('choose_level','Button_Sound_On0000')
-                GameObj[0].play();
+                playAudio('MainLoop');
               }
               else{
                 this.soundBt.setTexture('choose_level','Button_Sound_Off0000')
-                GameObj[0].pause();
+                stopAudio('MainLoop');
               }
        }
 

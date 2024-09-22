@@ -1,6 +1,6 @@
 import 'phaser';
 
-import {  GameData, placeIt, tween_Elastic, tween_Rays1, tween_Rays2, tween_Rotate} from "./utils";
+import {  GameData, placeIt, playAudio, tween_Elastic, tween_Rays1, tween_Rays2, tween_Rotate} from "./utils";
 import { Bg } from './objects/Bg';
 
 export class completeLetterScreen extends Phaser.Scene {
@@ -34,6 +34,8 @@ export class completeLetterScreen extends Phaser.Scene {
 
      create(): void {
 
+      playAudio('kids_cheers');
+
         let _Bg:Bg = new Bg(this);
 
         _Bg.base.setTexture(this.letterObj.bg.texture,this.letterObj.bg.frame);
@@ -55,10 +57,7 @@ export class completeLetterScreen extends Phaser.Scene {
         this.backTitle1.setAngle(6)
         tween_Rays1(this.backTitle1,this,18);
 
-
-        
-
-
+        //console.log("ee",this.letterObj.picture.texture,this.letterObj.picture.frame)
         this.title = this.add.image(0,0,this.letterObj.picture.texture,this.letterObj.picture.frame);
         placeIt(this.title,this,0.5,0.31);
         tween_Elastic(this.title,this);
@@ -76,15 +75,30 @@ export class completeLetterScreen extends Phaser.Scene {
         placeIt(this.playBtn,this,0.5,0.8);
         this.playBtn.setInteractive({cursor:"pointer"});
         this.playBtn.on('pointerdown',()=>{
+          playAudio('tap');
             //actual level
             let index:number = GameData.levelsIndex.indexOf(GameData.currentLetter);
-            //next letter
-            GameData.currentLetter = GameData.levelsIndex[index+1];
-            console.log('play next',GameData.currentLetter);
-            this.goPlay();
+
+            if(index+1 >= GameData.maxletter){
+              console.log('! this is thelast latter !')
+            }
+            else{
+              //next letter
+              GameData.currentLetter = GameData.levelsIndex[index+1];
+              console.log('play next',GameData.currentLetter);
+              this.goPlay();
+            }
+            
 
         })
         this.playBtn.on('pointerover',()=>{tween_Rotate(this.playBtn,this);})
+
+
+            let index:number = GameData.levelsIndex.indexOf(GameData.currentLetter);
+            if(index+1 >= GameData.maxletter){this.playBtn.setAlpha(0.2);}
+            else{this.playBtn.setAlpha(1);}
+       
+
 
         setTimeout(() => {
             tween_Rotate(this.playBtn,this);
@@ -94,14 +108,14 @@ export class completeLetterScreen extends Phaser.Scene {
         this.menuBtn = this.add.image(0,0,'graphics_1','Button_Menu0000');
         placeIt(this.menuBtn,this,0.23,0.8);
         this.menuBtn.setInteractive({cursor:"pointer"});
-        this.menuBtn.on('pointerdown',()=>{this.openMenu();})
+        this.menuBtn.on('pointerdown',()=>{ playAudio('tap');this.openMenu();})
 
 
         this.replayBtn= this.add.image(0,0,'graphics_1','Button_Restart0000');
         placeIt(this.replayBtn,this,0.77,0.8);
         this.replayBtn.setInteractive({cursor:"pointer"});
         this.replayBtn.on('pointerdown',()=>{
-            console.log('replay',GameData.currentLetter);
+             playAudio('tap');
             this.goPlay();
         })
 
@@ -127,6 +141,12 @@ export class completeLetterScreen extends Phaser.Scene {
           });
           this.TXTreplay.setOrigin(0.5,0.5);
           placeIt(this.TXTreplay,this,0.77,0.91);
+
+
+          setTimeout(() => {
+            let l:string = GameData.Languge.toLowerCase();
+            this.sound.addAudioSprite(l+'_fx_mixdown',{volume:1}).play(GameData.currentLetter+'_word');
+          }, 1700);
    }
   
    goPlay(){

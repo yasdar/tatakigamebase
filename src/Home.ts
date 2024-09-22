@@ -1,6 +1,6 @@
 import 'phaser';
 
-import { click_Anim, GameData, GameObj, placeIt, tween_Elastic, tween_ElasticY, tween_Rotate, UpDown} from "./utils";
+import {click_Anim, GameData, placeIt, playAudio, stopAudio, tween_Elastic, tween_ElasticY, tween_Rotate, UpDown} from "./utils";
 import { Bg } from './objects/Bg';
 
 export class Home extends Phaser.Scene {
@@ -29,9 +29,7 @@ export class Home extends Phaser.Scene {
      create(): void {
       console.log('Home Create v2 ---- GameData.Languge',GameData.Languge);
 
-
-      GameObj[GameObj.length] = this.sound.add('MainLoop');//sound at 0
-      GameObj[GameObj.length] = this.sound.add('tap');//sound at 1
+      
 
       this.data_text = this.cache.json.get('_texts')[(GameData.Languge).toLowerCase()];
       console.log('data_text',this.data_text)
@@ -56,7 +54,7 @@ export class Home extends Phaser.Scene {
         placeIt(this.playBtn,this,0.5,0.55);
         this.playBtn.setInteractive({cursor:"pointer"});
         this.playBtn.on('pointerdown',()=>{
-          if(GameData.SoundEnabled && GameData.UserInteract){GameObj[1].play();}
+          playAudio('tap');
           this.openMenu();
         })
         this.playBtn.on('pointerover',()=>{tween_Rotate(this.playBtn,this);})
@@ -65,7 +63,7 @@ export class Home extends Phaser.Scene {
         placeIt(this.languageBtn,this,0.75,0.55);
         this.languageBtn.setInteractive({cursor:"pointer"});
         this.languageBtn.on('pointerdown',()=>{
-          if(GameData.SoundEnabled && GameData.UserInteract){GameObj[1].play();}
+          playAudio('tap');
           click_Anim(this.languageBtn,this,this.openFlagsSelection.bind(this));
         })
 
@@ -90,15 +88,14 @@ export class Home extends Phaser.Scene {
 
 
         this.input.on('pointerdown',()=>{
-          GameData.UserInteract = true;
-          this.input.removeAllListeners();
-          if(GameData.SoundEnabled &&  !GameObj[0].isPlaying){
-            GameObj[0].play();
+          if(!GameData.UserInteract){
+            GameData.UserInteract = true;
+            this.input.removeAllListeners();
+            playAudio('MainLoop');
           }
+          
         });
 
-         /*  let s = this.sound.add('');
-s.isPlaying*/
 
    }
    openFlagsSelection(){
@@ -113,11 +110,11 @@ s.isPlaying*/
 
           if(GameData.SoundEnabled && GameData.UserInteract){
             this.soundBt.setTexture('main_menu','Button_Sound_On0000');
-            GameObj[0].play();
+            playAudio('MainLoop');
           }
           else{
             this.soundBt.setTexture('main_menu','Button_Sound_Off0000');
-            GameObj[0].pause();
+            stopAudio('MainLoop');
           }
    }
    openMenu(){

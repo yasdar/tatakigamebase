@@ -1,0 +1,264 @@
+{
+    "spritemap": {
+        "a": {
+            "start": 0.05,
+            "end": 0.55,
+            "loop": false
+        },
+        "a_word": {
+            "start": 1.65,
+            "end": 2.6,
+            "loop": false
+        },
+        "b": {
+            "start": 4.95,
+            "end": 5.65,
+            "loop": false
+        },
+        "b_word": {
+            "start": 6.35,
+            "end": 7.5,
+            "loop": false
+        },
+        "c": {
+            "start": 9.85,
+            "end": 10.6,
+            "loop": false
+        },
+        "c_word": {
+            "start": 11.25,
+            "end": 12.05,
+            "loop": false
+        },
+        "d": {
+            "start": 14.25,
+            "end": 15,
+            "loop": false
+        },
+        "d_word": {
+            "start": 15.75,
+            "end": 17.15,
+            "loop": false
+        },
+        "e": {
+            "start": 19.4,
+            "end": 20,
+            "loop": false
+        },
+        "e_word": {
+            "start": 20.9,
+            "end": 22.15,
+            "loop": false
+        },
+        "f": {
+            "start": 24.35,
+            "end": 25.05,
+            "loop": false
+        },
+        "f_word": {
+            "start": 25.95,
+            "end": 26.8,
+            "loop": false
+        },
+        "g": {
+            "start": 29,
+            "end": 29.8,
+            "loop": false
+        },
+        "g_word": {
+            "start": 30.65,
+            "end": 31.7,
+            "loop": false
+        },
+        "h": {
+            "start": 34.25,
+            "end": 35.1,
+            "loop": false
+        },
+        "h_word": {
+            "start": 36.05,
+            "end": 37.1,
+            "loop": false
+        },
+        "i": {
+            "start": 39.7,
+            "end": 40.3,
+            "loop": false
+        },
+        "i_word": {
+            "start": 41.15,
+            "end": 42.1,
+            "loop": false
+        },
+        "j": {
+            "start": 44.05,
+            "end": 45.05,
+            "loop": false
+        },
+        "j_word": {
+            "start": 45.8,
+            "end": 46.85,
+            "loop": false
+        },
+        "k": {
+            "start": 49.2,
+            "end": 49.85,
+            "loop": false
+        },
+        "k_word": {
+            "start": 50.75,
+            "end": 51.6,
+            "loop": false
+        },
+        "l": {
+            "start": 54.25,
+            "end": 55.1,
+            "loop": false
+        },
+        "l_word": {
+            "start": 56.15,
+            "end": 57.25,
+            "loop": false
+        },
+        "m": {
+            "start": 59.8,
+            "end": 60.55,
+            "loop": false
+        },
+        "m_word": {
+            "start": 61.4,
+            "end": 62.75,
+            "loop": false
+        },
+        "n": {
+            "start": 65.1,
+            "end": 65.9,
+            "loop": false
+        },
+        "n_word": {
+            "start": 66.8,
+            "end": 68.15,
+            "loop": false
+        },
+        "o": {
+            "start": 70.15,
+            "end": 70.8,
+            "loop": false
+        },
+        "o_word": {
+            "start": 71.75,
+            "end": 72.7,
+            "loop": false
+        },
+        "p": {
+            "start": 74.75,
+            "end": 75.4,
+            "loop": false
+        },
+        "p_word": {
+            "start": 76.4,
+            "end": 77.25,
+            "loop": false
+        },
+        "q": {
+            "start": 79.1,
+            "end": 79.75,
+            "loop": false
+        },
+        "q_word": {
+            "start": 80.6,
+            "end": 81.5,
+            "loop": false
+        },
+        "r": {
+            "start": 83.6,
+            "end": 84.55,
+            "loop": false
+        },
+        "r_word": {
+            "start": 85.3,
+            "end": 86.35,
+            "loop": false
+        },
+        "s": {
+            "start": 88.7,
+            "end": 89.5,
+            "loop": false
+        },
+        "s_word": {
+            "start": 90.4,
+            "end": 91.6,
+            "loop": false
+        },
+        "t": {
+            "start": 93.9,
+            "end": 94.55,
+            "loop": false
+        },
+        "t_word": {
+            "start": 96.05,
+            "end": 97.2,
+            "loop": false
+        },
+        "u": {
+            "start": 98.95,
+            "end": 99.65,
+            "loop": false
+        },
+        "u_word": {
+            "start": 100.45,
+            "end": 101.3,
+            "loop": false
+        },
+        "v": {
+            "start": 103.65,
+            "end": 104.55,
+            "loop": false
+        },
+        "v_word": {
+            "start": 105.05,
+            "end": 106.15,
+            "loop": false
+        },
+        "w": {
+            "start": 108.4,
+            "end": 109.6,
+            "loop": false
+        },
+        "w_word": {
+            "start": 110.4,
+            "end": 111.7,
+            "loop": false
+        },
+        "x": {
+            "start": 113.35,
+            "end": 114.35,
+            "loop": false
+        },
+        "x_word": {
+            "start": 115.2,
+            "end": 116.55,
+            "loop": false
+        },
+        "y": {
+            "start": 118.65,
+            "end": 120,
+            "loop": false
+        },
+        "y_word": {
+            "start": 120.9,
+            "end": 122.1,
+            "loop": false
+        },
+        "z": {
+            "start": 124.5,
+            "end": 125.4,
+            "loop": false
+        },
+        "z_word": {
+            "start": 126,
+            "end": 127.3,
+            "loop": false
+        }
+    }
+}

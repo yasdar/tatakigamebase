@@ -1,5 +1,5 @@
 import 'phaser';
-import { GameData, GameObj } from '../utils';
+import { GameData, playAudio } from '../utils';
 
 export class Thumb extends Phaser.GameObjects.Container {
    
@@ -62,7 +62,9 @@ export class Thumb extends Phaser.GameObjects.Container {
     
     }
    goPlay(){
-    if(GameData.SoundEnabled && GameData.UserInteract){GameObj[1].play();}
+    if(GameData.SoundEnabled && GameData.UserInteract){
+      playAudio('tap');
+      }
       this.scene.cameras.main.once(
          Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam:any, effect:any) => {
          this.scene.scene.start('PlayGame');

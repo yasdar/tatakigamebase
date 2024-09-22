@@ -1,6 +1,6 @@
 import 'phaser';
 import { Bg } from './objects/Bg';
-import { click_Anim, GameData, GameObj, IncreaseLevels, placeIt, tween_big_star, tween_complete_letter, tween_complete_stars, tween_EndOf_letter, tween_shine, tween_small_star } from './utils';
+import { click_Anim, GameData, IncreaseLevels, placeIt, playAudio, stopAudio, tween_big_star, tween_complete_letter, tween_complete_stars, tween_EndOf_letter, tween_shine, tween_small_star } from './utils';
 
 
 export class PlayGame extends Phaser.Scene {
@@ -69,6 +69,7 @@ export class PlayGame extends Phaser.Scene {
         placeIt(this.homeBtn,this,0.90,0.07);
         this.homeBtn.setInteractive({cursor:"pointer"});
         this.homeBtn.on('pointerdown',()=>{
+          playAudio('tap');
           click_Anim(this.homeBtn,this,this.backMenu.bind(this));
         })
 
@@ -77,6 +78,7 @@ export class PlayGame extends Phaser.Scene {
         placeIt(this.soundBt,this,0.76,0.07);
         this.soundBt.setInteractive({cursor:"pointer"});
         this.soundBt.on('pointerdown',()=>{
+          playAudio('tap');
           click_Anim(this.soundBt,this,this.toggleSound.bind(this));
         })
 
@@ -115,6 +117,10 @@ export class PlayGame extends Phaser.Scene {
 
         this.marker.on('pointermove',(P:Phaser.Input.Pointer)=>{this.onMove(P)})
 
+       
+
+       
+
         this.Addletter("upper");
         this.startBlock();
         this.initGraphic();
@@ -143,13 +149,6 @@ export class PlayGame extends Phaser.Scene {
         this.showFinger();
       }
      
-
-
-
-
-      /*let en_sounds_map = this.cache.json.get('en_fx_mixdown');
-      console.log('en_sounds_map',en_sounds_map)
-      this.sound.playAudioSprite('en_fx_mixdown',"a_word");*/
 
 
      }initGraphic(){
@@ -273,7 +272,11 @@ export class PlayGame extends Phaser.Scene {
         this.starsCounter = 0;
 
 
-        if(upperORlower == "lower"){this.lastLetter = true;}
+        if(upperORlower == "lower"){this.lastLetter = true; playAudio('restart');}
+        else{
+          let l:string = GameData.Languge.toLowerCase();
+          this.sound.addAudioSprite(l+'_fx_mixdown',{volume:1}).play(GameData.currentLetter);
+        }
         //GameData.currentLetter
         console.log("Add letter :",GameData.currentLetter,'Languge',GameData.Languge);
 
@@ -364,11 +367,11 @@ export class PlayGame extends Phaser.Scene {
       GameData.SoundEnabled = ! GameData.SoundEnabled;
       if(GameData.SoundEnabled && GameData.UserInteract){
         this.soundBt.setTexture('choose_level','Button_Sound_On0000')
-        GameObj[0].play();
+        playAudio('MainLoop');
       }
       else{
         this.soundBt.setTexture('choose_level','Button_Sound_Off0000')
-        GameObj[0].pause();
+        stopAudio('MainLoop');
       }
 
        }
@@ -410,7 +413,8 @@ export class PlayGame extends Phaser.Scene {
         }
       }
       playstarAnimation(){
-        //console.log('@ playstarAnimation');
+        console.log('@ playstarAnimation');
+        playAudio('restart');
       for(let bs:number = 0 ; bs < this.allBigStars.length; bs++){
         if(this.allBigStars[bs].alpha == 0){
           this.allBigStars[bs].setAlpha(1);
@@ -502,9 +506,10 @@ export class PlayGame extends Phaser.Scene {
             //hide marker
 
             this.lastMask();
-
+           
             this.animateCompleteLetter();
             this.animateCompleteStars();
+            setTimeout(() => {playAudio('Small_Success'); }, 1000);
 
             if(!this.lastLetter){
               setTimeout(() => {

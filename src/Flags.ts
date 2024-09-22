@@ -87,9 +87,15 @@ export class Flags extends Phaser.Scene {
     GameData.Languge = (GameData.LangFromName[this.currentFlagFrameName]).toUpperCase();
     saveLanguage();
     //load the assets
-    this.load.audioSprite('sfx_'+_name, 'assets/audio/words/'+_name+'.json', [
-        'assets/audio/words/en_sounds.ogg'
-    ]);
+   
+
+    
+     this.load.audioSprite(
+      GameData.LangFromName[this.currentFlagFrameName]+'_fx_mixdown', 
+      'assets/audio/words/'+GameData.LangFromName[this.currentFlagFrameName]+'_fx_mixdown.json',
+        'assets/audio/words/'+GameData.LangFromName[this.currentFlagFrameName]+'_sounds.mp3'
+    );
+    
     this.load.on("progress", this.fileComplte, this);
     this.load.on("complete", this.complete, this);
     //show layer
