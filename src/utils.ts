@@ -341,8 +341,8 @@ export const resetLevels = ()=> {
   GameData.playedLevel = 0;
   GameData.currentLevel = 1;
 
-  localStorage.setItem("playedLevel", "0");
-  localStorage.setItem("currentLevel", "1");
+  localStorage.setItem("playedLevel_"+GameData.Languge, "0");
+  localStorage.setItem("currentLevel_"+GameData.Languge, "1");
 
 }
 
@@ -352,15 +352,16 @@ export const IncreaseLevels =  ()=> {
 
   if(GameData.currentLevel > GameData.maxletter){GameData.currentLevel = GameData.maxletter};
 
-  localStorage.setItem("playedLevel", (GameData.playedLevel).toString());
-  localStorage.setItem("currentLevel", (GameData.currentLevel).toString());
+  localStorage.setItem("playedLevel_"+GameData.Languge, (GameData.playedLevel).toString());
+  localStorage.setItem("currentLevel_"+GameData.Languge, (GameData.currentLevel).toString());
 }
 
 
 export const getLevels =  ()=> {
-  if(localStorage.getItem("playedLevel")){
-    GameData.playedLevel = Number(localStorage.getItem("playedLevel"));
-    GameData.currentLevel = Number(localStorage.getItem("currentLevel"));
+  //console.log("getLevels",GameData.Languge)
+  if(localStorage.getItem("playedLevel_"+GameData.Languge)){
+    GameData.playedLevel = Number(localStorage.getItem("playedLevel_"+GameData.Languge));
+    GameData.currentLevel = Number(localStorage.getItem("currentLevel_"+GameData.Languge));
   }else{
     resetLevels();
   }

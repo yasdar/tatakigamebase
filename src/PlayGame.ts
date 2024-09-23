@@ -275,7 +275,9 @@ export class PlayGame extends Phaser.Scene {
         if(upperORlower == "lower"){this.lastLetter = true; playAudio('restart');}
         else{
           let l:string = GameData.Languge.toLowerCase();
+          if(GameData.SoundEnabled && GameData.UserInteract){
           this.sound.addAudioSprite(l+'_fx_mixdown',{volume:1}).play(GameData.currentLetter);
+          }
         }
         //GameData.currentLetter
         console.log("Add letter :",GameData.currentLetter,'Languge',GameData.Languge);

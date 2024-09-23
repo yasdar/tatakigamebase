@@ -1,6 +1,6 @@
 import 'phaser';
 
-import { click_Anim, GameData, placeIt, saveLanguage, tween_Elastic, tween_ElasticY, tween_Rotate, UpDown} from "./utils";
+import { click_Anim, GameData, getLevels, placeIt, saveLanguage, tween_Elastic, tween_ElasticY, tween_Rotate, UpDown} from "./utils";
 import { Bg } from './objects/Bg';
 
 export class Flags extends Phaser.Scene {
@@ -87,7 +87,7 @@ export class Flags extends Phaser.Scene {
     GameData.Languge = (GameData.LangFromName[this.currentFlagFrameName]).toUpperCase();
     saveLanguage();
     //load the assets
-   
+    getLevels();
 
     
      this.load.audioSprite(

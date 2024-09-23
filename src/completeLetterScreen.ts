@@ -61,6 +61,8 @@ export class completeLetterScreen extends Phaser.Scene {
         this.title = this.add.image(0,0,this.letterObj.picture.texture,this.letterObj.picture.frame);
         placeIt(this.title,this,0.5,0.31);
         tween_Elastic(this.title,this);
+        this.title.setInteractive();
+        this.title.on('pointerdown',()=>{this.playTheWord();});
 
         this.titleTXT = this.add.text(0,0,(this.letterObj.picture.word).toUpperCase(),{
             font: "bold 96px bariol_boldbold",
@@ -100,9 +102,7 @@ export class completeLetterScreen extends Phaser.Scene {
        
 
 
-        setTimeout(() => {
-            tween_Rotate(this.playBtn,this);
-        }, 1000);
+        
         
         
         this.menuBtn = this.add.image(0,0,'graphics_1','Button_Menu0000');
@@ -118,6 +118,10 @@ export class completeLetterScreen extends Phaser.Scene {
              playAudio('tap');
             this.goPlay();
         })
+
+
+          
+
 
         this.TXT = this.add.text(0, 0,data_text.next, {
           font: "bold 36px bariol_boldbold",
@@ -143,12 +147,32 @@ export class completeLetterScreen extends Phaser.Scene {
           placeIt(this.TXTreplay,this,0.77,0.91);
 
 
-          setTimeout(() => {
-            let l:string = GameData.Languge.toLowerCase();
-            this.sound.addAudioSprite(l+'_fx_mixdown',{volume:1}).play(GameData.currentLetter+'_word');
-          }, 1700);
+          setTimeout(() => {this.playTheWord();}, 1000);
+
+
+          this.playBtn.setVisible(false);
+          this.menuBtn.setVisible(false);
+          this.replayBtn.setVisible(false);
+          this.TXT.setVisible(false);
+          this.TXTmenu.setVisible(false);
+          this.TXTreplay.setVisible(false);
+        setTimeout(() => {
+          this.TXT.setVisible(true);
+          this.TXTmenu.setVisible(true);
+          this.TXTreplay.setVisible(true);
+          this.playBtn.setVisible(true);
+          this.menuBtn.setVisible(true);
+          this.replayBtn.setVisible(true);
+
+            tween_Rotate(this.playBtn,this);
+        }, 1500);
    }
-  
+  playTheWord(){
+    let l:string = GameData.Languge.toLowerCase();
+    if(GameData.SoundEnabled && GameData.UserInteract){
+      this.sound.addAudioSprite(l+'_fx_mixdown',{volume:1}).play(GameData.currentLetter+'_word');
+    }
+  }
    goPlay(){
     this.cameras.main.once(
        Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam:any, effect:any) => {
