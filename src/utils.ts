@@ -14,6 +14,7 @@ export let shuffleArray = function shuffleArray(array:any) {
   export let GameObj:Array<any>=[];
 
 export let GameData:any = {
+  endScreenPlayed:0,
   equa:{case:'',X:0,Y:0,pente:0,ori:0},
   UserInteract:false,
   gameSize:{width:0,height:0},
@@ -341,8 +342,11 @@ export const resetLevels = ()=> {
   GameData.playedLevel = 0;
   GameData.currentLevel = 1;
 
+
   localStorage.setItem("playedLevel_"+GameData.Languge, "0");
   localStorage.setItem("currentLevel_"+GameData.Languge, "1");
+
+  localStorage.setItem("endScreenPlayed_"+GameData.Languge, "0");
 
 }
 
@@ -362,6 +366,7 @@ export const getLevels =  ()=> {
   if(localStorage.getItem("playedLevel_"+GameData.Languge)){
     GameData.playedLevel = Number(localStorage.getItem("playedLevel_"+GameData.Languge));
     GameData.currentLevel = Number(localStorage.getItem("currentLevel_"+GameData.Languge));
+    GameData.endScreenPlayed = Number(localStorage.getItem("endScreenPlayed_"+GameData.Languge));
   }else{
     resetLevels();
   }

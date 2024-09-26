@@ -81,8 +81,14 @@ export class completeLetterScreen extends Phaser.Scene {
             //actual level
             let index:number = GameData.levelsIndex.indexOf(GameData.currentLetter);
 
-            if(index+1 >= GameData.maxletter){
-              console.log('! this is thelast latter !')
+            if(index+1 >= GameData.maxletter ){
+              console.log('! this is thelast latter !');
+              if(GameData.endScreenPlayed == 0){
+                this.scene.start('EndScreen');
+              }else{
+                this.openMenu();
+              }
+              
             }
             else{
               //next letter
@@ -96,9 +102,11 @@ export class completeLetterScreen extends Phaser.Scene {
         this.playBtn.on('pointerover',()=>{tween_Rotate(this.playBtn,this);})
 
 
-            let index:number = GameData.levelsIndex.indexOf(GameData.currentLetter);
+           /* let index:number = GameData.levelsIndex.indexOf(GameData.currentLetter);
             if(index+1 >= GameData.maxletter){this.playBtn.setAlpha(0.2);}
-            else{this.playBtn.setAlpha(1);}
+            else{this.playBtn.setAlpha(1);}*/
+
+            this.playBtn.setAlpha(1);
        
 
 

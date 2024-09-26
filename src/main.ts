@@ -7,6 +7,7 @@ import { Home } from "./Home";
 import { Flags } from "./Flags";
 import { Menu } from "./Menu";
 import { completeLetterScreen } from "./completeLetterScreen";
+import { EndScreen } from "./EndScreen";
 
 
 $(function(){ 
@@ -54,7 +55,7 @@ let game_height = 900;
             height: game_height
         },
         backgroundColor: '#000000',
-        scene: [Boot,Preload,Home,PlayGame,Flags,Menu,completeLetterScreen]
+        scene: [Boot,Preload,Home,PlayGame,Flags,Menu,completeLetterScreen,EndScreen]
     }
     );
    }

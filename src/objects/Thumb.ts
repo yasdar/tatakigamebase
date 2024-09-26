@@ -67,7 +67,7 @@ export class Thumb extends Phaser.GameObjects.Container {
       }
       this.scene.cameras.main.once(
          Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam:any, effect:any) => {
-         this.scene.scene.start('PlayGame');
+        this.scene.scene.start('PlayGame'); 
      });
      this.scene.cameras.main.fadeOut(300, 0, 0, 0);
     }

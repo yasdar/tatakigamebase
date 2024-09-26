@@ -76,6 +76,8 @@ export class Menu extends Phaser.Scene {
         this.chalkboardBtn.setInteractive({cursor:"pointer"});
         this.chalkboardBtn.on('pointerdown',()=>{this.goToChalkBoard();})
 
+        if(GameData.endScreenPlayed == 0){this.chalkboardBtn.setAlpha(0.4)}
+        else{this.chalkboardBtn.setAlpha(1)}
 
         let data_text = this.cache.json.get('_texts')[(GameData.Languge).toLowerCase()];
 
@@ -112,7 +114,10 @@ export class Menu extends Phaser.Scene {
        this.cameras.main.fadeOut(300, 0, 0, 0);
       }
       goToChalkBoard(){
-        console.log('going to chalkboard');
+        if(GameData.endScreenPlayed == 1){
+          console.log('going to chalkboard');
+        }
+       
       }
 
 

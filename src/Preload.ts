@@ -66,7 +66,19 @@ export class Preload extends Phaser.Scene {
       "./assets/graphics/pictures_2.png",
       "./assets/graphics/pictures_2.json"
     );
+    this.load.atlas(
+      "letters_complete",
+      "./assets/graphics/letters_complete.png",
+      "./assets/graphics/letters_complete.json"
+    );
+
+    this.load.atlas(
+      "word_level",
+      "./assets/graphics/word_level.png",
+      "./assets/graphics/word_level.json"
+    );
     
+    this.load.image('chalkboard_button','./assets/graphics/chalkboard_button.png');
     this.load.atlas(
       "letters_1",
       "./assets/graphics/letters_1.png",
@@ -103,8 +115,10 @@ export class Preload extends Phaser.Scene {
     this.load.audio('Small Success','./assets/audio/Small Success.mp3');
     this.load.audio('restart','./assets/audio/restart.mp3');
     this.load.audio('kids_cheers','./assets/audio/kids_cheers.mp3');
-
+    this.load.audio('Cartoon_Big_Win','./assets/audio/Cartoon Big Win.mp3');
+    this.load.audio('Game_Award_3','./assets/audio/Game Award 3.mp3');
     
+
 
       
       let l:string = GameData.Languge.toLowerCase();
@@ -139,8 +153,12 @@ a.volume = 0.5;*/
     all_audios['Small_Success'] =  this.sound.add('Small Success');
     all_audios['kids_cheers'] =  this.sound.add('kids_cheers');
 
+    all_audios['Cartoon_Big_Win'] =  this.sound.add('Cartoon_Big_Win');
+    all_audios['Game_Award_3'] =  this.sound.add('Game_Award_3');
 
- 
+    
+    
+
 
 
 
