@@ -116,6 +116,7 @@ export class Menu extends Phaser.Scene {
       goToChalkBoard(){
         if(GameData.endScreenPlayed == 1){
           console.log('going to chalkboard');
+          this.scene.start('FreeDraw');
         }
        
       }

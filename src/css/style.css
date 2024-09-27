@@ -79,3 +79,7 @@ body {
     width: 80%;
     text-align: center;
 }
+#screenShot{
+position: absolute;
+display: none;
+}
