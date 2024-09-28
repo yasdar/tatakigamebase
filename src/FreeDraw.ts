@@ -1,10 +1,9 @@
 import "phaser";
 import { Bg } from "./objects/Bg";
-import { GameData, placeIt, playAudio } from "./utils";
+import { click_Anim, GameData, placeIt, playAudio, stopAudio } from "./utils";
 
 export class FreeDraw extends Phaser.Scene {
   TXT: Phaser.GameObjects.Text;
-
   boardDeco:Phaser.GameObjects.Image;
   boardBack:Phaser.GameObjects.Image;
   board:Phaser.GameObjects.Image;
@@ -21,6 +20,28 @@ export class FreeDraw extends Phaser.Scene {
 
     camera:Phaser.GameObjects.Image;
     trashBin:Phaser.GameObjects.Image;
+
+
+
+    edit_button:Phaser.GameObjects.Image;
+    save_button:Phaser.GameObjects.Image;
+    menu_button:Phaser.GameObjects.Image;
+
+    edit_buttonTxt:Phaser.GameObjects.Text;
+    save_buttonTxt:Phaser.GameObjects.Text;
+    menu_buttonTxt:Phaser.GameObjects.Text;
+
+    container1:Phaser.GameObjects.Container;
+    editMode:boolean = true;
+
+
+    top_back:Phaser.GameObjects.Image;//Dropzone_Inner0000  Dropzone_Outer0000  SlideMenu_Back0000
+    top_arrow:Phaser.GameObjects.Image;//Down_Arrow0000  Up_Arrow0000
+    top_audio:Phaser.GameObjects.Image;//Button_Sound_Off0000  Button_Sound_On0000
+    top_menu:Phaser.GameObjects.Image;//Home0000
+    containerTop:Phaser.GameObjects.Container;
+    menu_down:boolean = false;
+    finger:Phaser.GameObjects.Image|null;
 
   constructor() {
     super("FreeDraw");
@@ -59,9 +80,8 @@ export class FreeDraw extends Phaser.Scene {
 
   create(): void {
     this.addedLetters=[];
-    //add boad
-
-    
+    this.editMode = true;
+    this.menu_down = false;
 
     this.board = this.add.image(0,0,'free_zone','Board0000');
     placeIt(this.board,this,0.5,0.3);
@@ -101,11 +121,15 @@ export class FreeDraw extends Phaser.Scene {
 
     //add letter/drag drop
     this.input.on('pointermove',(P:Phaser.Input.Pointer)=>{
-        if(this.CurrentLetter){this.CurrentLetter.setPosition(P.x,P.y);}
+        if(!this.editMode){return;}
+        if(this.CurrentLetter){
+          if(this.finger){this.finger.destroy(); this.finger = null;}
+          this.CurrentLetter.setPosition(P.x,P.y);
+        }
     })
 
     this.input.on('pointerup',(P:Phaser.Input.Pointer)=>{
-        
+      if(!this.editMode){return;}
         //check if letter inside the baord
         let rect:Phaser.Geom.Rectangle = new Phaser.Geom.Rectangle(
             this.board.x-this.board.displayWidth*0.43,
@@ -133,11 +157,141 @@ export class FreeDraw extends Phaser.Scene {
    this.trashBin.setInteractive({cursor:'pointer'});
    this.trashBin.on('pointerdown',()=>{this.clearBoard();})
    
-  
-  
-    
-  }moveRight(){
+   let data_text:any = this.cache.json.get('_texts')[(GameData.Languge).toLowerCase()];
+   console.log('data_text',data_text);
+  let style1:any = {font: "bold 32px bariol_boldbold",color: "#ffffff"};
 
+   this.edit_button = this.add.image(0,0,'free_zone','Button_Edit0000');
+   placeIt(this.edit_button,this,0.25,0.85);
+   this.edit_buttonTxt =this.add.text(0, 0,data_text.edit, style1);this.edit_buttonTxt.setOrigin(0.5,0.5);
+   placeIt(this.edit_buttonTxt,this,0.25,0.93);
+   this.edit_button.setInteractive({cursor:'pointer'});
+   this.edit_button.on('pointerdown',()=>{this.goEditMode();})
+
+   this.save_button = this.add.image(0,0,'free_zone','Button_Save0000');
+   placeIt(this.save_button,this,0.5,0.85);
+   this.save_buttonTxt =this.add.text(0, 0,data_text.save, style1);this.save_buttonTxt.setOrigin(0.5,0.5);
+   placeIt(this.save_buttonTxt,this,0.5,0.93);
+   this.save_button.setInteractive({cursor:'pointer'});
+   this.save_button.on('pointerdown',()=>{this.savePng();})
+
+   this.menu_button = this.add.image(0,0,'free_zone','Button_Menu0000');
+   placeIt(this.menu_button,this,0.75,0.85);
+   this.menu_buttonTxt =this.add.text(0, 0,data_text.menu, style1);this.menu_buttonTxt.setOrigin(0.5,0.5);
+   placeIt(this.menu_buttonTxt,this,0.75,0.93);
+   this.menu_button.setInteractive({cursor:'pointer'});
+   this.menu_button.on('pointerdown',()=>{this.openMenu();})
+   
+
+this.container1 = this.add.container();
+this.container1.add([
+  this.edit_button,this.edit_buttonTxt,
+  this.save_button,this.save_buttonTxt,
+  this.menu_button,this.menu_buttonTxt
+])
+this.container1.setAlpha(0); 
+
+
+
+this.top_back= this.add.image(0,0,'free_zone','SlideMenu_Back0000');
+placeIt(this.top_back,this,0.85,0.1);
+
+this.top_arrow = this.add.image(0,0,'free_zone','Down_Arrow0000');
+placeIt(this.top_arrow,this,0.85,0.23);
+
+this.top_audio = this.add.image(0,0,'free_zone','Button_Sound_On0000');
+placeIt(this.top_audio,this,0.85,0.05);
+if(!GameData.SoundEnabled){this.top_audio.setTexture('free_zone','Button_Sound_Off0000')}
+this.top_audio.setInteractive({cursor:"pointer"});
+        this.top_audio.on('pointerdown',()=>{
+          playAudio('tap');
+          click_Anim(this.top_audio,this,this.toggleSound.bind(this));
+        })
+
+this.top_menu = this.add.image(0,0,'free_zone','Home0000');
+this.top_menu.setInteractive({cursor:'pointer'});
+this.top_menu.on('pointerdown',()=>{
+  click_Anim(this.top_menu,this,this.openMenu.bind(this));
+});
+placeIt(this.top_menu,this,0.85,0.14);
+
+this.containerTop =this.add.container(0,-this.cameras.main.height*0.21,[this.top_back,this.top_arrow,this.top_audio,this.top_menu]);
+this.top_arrow.setInteractive({cursor:'pointer'});
+this.top_arrow.on('pointerdown',()=>{
+  playAudio('tap');
+  if(!this.menu_down){
+    this.tweens.add({
+      duration:800,
+      targets:this.containerTop,
+      y:0,
+      ease:Phaser.Math.Easing.Expo.Out,
+      onComplete:()=>{this.top_arrow.setTexture('free_zone','Up_Arrow0000');}
+    });
+  }else{
+    this.tweens.add({
+      duration:800,
+      targets:this.containerTop,
+      y:-this.cameras.main.height*0.21,
+      ease:Phaser.Math.Easing.Expo.Out,
+      onComplete:()=>{this.top_arrow.setTexture('free_zone','Down_Arrow0000');}
+    });
+  }
+
+  this.menu_down = !this.menu_down;
+
+})
+
+
+
+this.finger = this.add.image(200,200,'graphics_1','Finger0000');
+this.finger.setOrigin(0.1,0.1);
+this.finger.setVisible(false);
+
+this.showFinger();
+}
+showFinger(): void {
+
+  setTimeout(() => {
+   if( !this.finger ){return;}
+    this.finger.setScale(1.1,1.1);
+    let firstC:any = this.block1Container.getAt(0);
+    this.finger.setPosition(firstC.x,firstC.y);
+    this.finger.setVisible(true);
+    this.finger.setAlpha(1);
+    this.finger.setAngle(0);
+
+    this.tweens.add({
+      targets:this.finger,
+      duration:500,
+      delay:0,
+      scaleY:0.8,
+      scaleX:0.8,
+      angle:-20
+    })
+
+    this.tweens.add({
+      targets:this.finger,
+      duration:1000,
+      delay:750,
+      x:this.board.x,
+      y:this.board.y
+    })
+
+
+    this.tweens.add({
+      targets:this.finger,
+      duration:200,
+      delay:2000,
+      alpha:0,
+      onComplete:()=>{
+        this.showFinger();
+      }
+    })
+  }, 500);
+  
+ }
+moveRight(){
+    playAudio('tap');
     this.arrowright.setVisible(false);
     this.block2Container.setAlpha(0);
 
@@ -162,6 +316,7 @@ export class FreeDraw extends Phaser.Scene {
 
   }
   moveLeft(){
+    playAudio('tap');
     this.arrowLeft.setVisible(false);
 
     this.block1Container.setAlpha(0);
@@ -242,6 +397,7 @@ export class FreeDraw extends Phaser.Scene {
         this.block2Container.setX(this.cameras.main.width)
     }
   }clicked(name:string,x:number,y:number){
+    if(!this.editMode){return;}
     console.log('you click',name);
 
     let letter:Phaser.GameObjects.Image = this.add.image(x,y,'free_zone','Letter_'+name+'0001');
@@ -249,12 +405,20 @@ export class FreeDraw extends Phaser.Scene {
     letter.setName('Letter_'+name+'0001');
 
     letter.on('pointerdown',()=>{
-
+      if(!this.editMode){return;}
+      playAudio('Pop_B');
         this.CurrentLetter = letter;
+        this.tweens.add({
+          targets:letter,
+          duration:50,
+          scaleX:1.2,
+          scaleY:1.2
+        });
         this.CurrentLetter.setTexture('free_zone',this.CurrentLetter.name.replace('0002','0001'))
     })
     letter.on('pointerup',()=>{
-    
+      if(!this.editMode){return;}
+      playAudio('Pop_D');
         this.CurrentLetter = letter;
         this.CurrentLetter.setScale(1,1)
         this.CurrentLetter.setTexture('free_zone',this.CurrentLetter.name.replace('0001','0002'))
@@ -264,12 +428,12 @@ export class FreeDraw extends Phaser.Scene {
     this.CurrentLetter = letter;
     this.tweens.add({
         targets:letter,
-        duration:100,
+        duration:50,
         scaleX:1.2,
         scaleY:1.2
       });
     this.addedLetters.push(letter);
-    playAudio('tap');
+    playAudio('Pop_B');
     
   }
   alertCadre(){
@@ -285,6 +449,8 @@ export class FreeDraw extends Phaser.Scene {
       });
   }
   clearBoard(){
+    playAudio('tap');
+    playAudio('erase_board');
     console.log(this.addedLetters);
     this.trashBin.setDepth(2);
     this.addedLetters.forEach((letter:Phaser.GameObjects.Image)=>{
@@ -307,6 +473,9 @@ export class FreeDraw extends Phaser.Scene {
   }
 takeSnapShot(){
 
+  playAudio('tap');
+
+  this.editMode = false;
    this.boardBack.setAlpha(1);
     //hide
     this.board.setAlpha(0);
@@ -316,6 +485,8 @@ takeSnapShot(){
     this.trashBin.setAlpha(0);
     this.arrowLeft.setAlpha(0);
     this.arrowright.setAlpha(0);
+
+
 
     let rect:Phaser.Geom.Rectangle = new Phaser.Geom.Rectangle(
         this.boardBack.x-this.boardBack.displayWidth*0.48,
@@ -330,6 +501,12 @@ takeSnapShot(){
         Math.round(rect.width), 
         Math.round(rect.height), (image:any) =>
     {
+
+      //remove old image
+  let image_x:any = document.getElementById('screenShot');
+  if(image_x){ image_x.parentNode.removeChild(image_x);}
+
+
     let im = document.body.appendChild(image);
     im.id ="screenShot";
     }); 
@@ -337,6 +514,7 @@ takeSnapShot(){
 
 
     setTimeout(() => {
+      playAudio('photo');
         this.boardBack.setAlpha(0.5);
         //show
         this.tweens.add({
@@ -353,27 +531,67 @@ takeSnapShot(){
            alpha:1,
            angle:10,
          });
-   
-   
-          /*
-       show edit button
-       show save  button
-       show menu button
-       add sounds
-       correct italian issue
-       */
-    }, 1000);
+       this.container1.setY(-24);
+       this.tweens.add({
+        targets:this.container1,
+        duration:500,
+        y:0,
+        alpha:1
+      });
+    }, 500);
     
 }
+goEditMode(){
+    playAudio('tap');
+    this.container1.setAlpha(0);
 
+    this.boardBack.setAlpha(0);
+    this.boardDeco.setAlpha(0);
+    this.boardDeco.setAngle(0);
 
+    this.board.setAlpha(1);
+    this.block1Container.setAlpha(1);
+    this.block2Container.setAlpha(1);
+    this.camera.setAlpha(1);
+    this.trashBin.setAlpha(1);
+    this.arrowLeft.setAlpha(1);
+    this.arrowright.setAlpha(1);
 
-//for the download GamepadButton
- /*let src =document.getElementById("screenShot").src;
+    this.editMode = true;
+   
+}savePng(){
+    playAudio('tap');
+    //console.log('save now');
+    let dom:any = document.getElementById("screenShot");
+    let src:any = dom.src;
+    //console.log('src',src);
     var a = document.createElement("a");
     a.href = src;
    // a.href = "data:image/png;base64," + ImageBase64; //Image Base64 Goes here
     a.download = "screenShot.png"; //File name Here
-    //a.click(); //Downloaded file
-    */
+    a.click(); //Downloaded file
+}
+openMenu(){
+  playAudio('tap');
+  this.cameras.main.once(
+    Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam:any, effect:any) => {
+    this.scene.start('Menu');
+
+});
+this.cameras.main.fadeOut(300, 0, 0, 0);
+}
+
+
+toggleSound(){
+  GameData.SoundEnabled = ! GameData.SoundEnabled;
+       
+        if(GameData.SoundEnabled && GameData.UserInteract){
+          this.top_audio.setTexture('free_zone','Button_Sound_On0000')
+          playAudio('MainLoop');
+        }
+        else{
+          this.top_audio.setTexture('free_zone','Button_Sound_Off0000');
+          stopAudio('MainLoop');
+        }
+ }
 }

@@ -88,7 +88,8 @@ export class Flags extends Phaser.Scene {
     saveLanguage();
     //load the assets
     getLevels();
-
+    //menu pagination
+    GameData.MenuPage = 0;
     
      this.load.audioSprite(
       GameData.LangFromName[this.currentFlagFrameName]+'_fx_mixdown', 

@@ -1,6 +1,6 @@
 import 'phaser';
 
-import { click_Anim, GameData, GameObj, placeIt, playAudio, stopAudio} from "./utils";
+import { click_Anim, GameData, GameObj, OrilevelsIndex, OrilevelsOrder, placeIt, playAudio, stopAudio} from "./utils";
 import { Bg } from './objects/Bg';
 import { Scrollable } from './Scrollable';
 
@@ -30,6 +30,32 @@ export class Menu extends Phaser.Scene {
 
       //scrollable menu
       this.scrollable = new Scrollable(this);
+
+
+      let data_letter = this.cache.json.get((GameData.Languge).toLowerCase()+'_letters');
+      //console.log('voila',data_letter);
+      //create an ew array not just point to array
+      GameData.levelsOrder = [...OrilevelsOrder];
+      GameData.levelsIndex = [...OrilevelsIndex];
+      //console.log('okokok',OrilevelsOrder)
+      let removeAt=[];
+
+      for( let v:number = 0 ; v<GameData.levelsOrder.length; v++){
+        //console.log(GameData.levelsOrder[v].charAt(1),"@",data_letter[GameData.levelsOrder[v].charAt(1)])
+        if( data_letter[GameData.levelsOrder[v].charAt(1)] == undefined){
+          removeAt.push(v);
+        }
+      }
+   
+       //remove not founded data
+      for( let r:number = 0 ; r<removeAt.length; r++){
+        GameData.levelsOrder.splice(removeAt[r], 1);
+        GameData.levelsIndex.splice(removeAt[r], 1);
+      }
+      
+//console.log("result levelsOrder",GameData.levelsOrder)
+//console.log("result levelsIndex",GameData.levelsIndex)
+
       this.scrollable.makeThumbs(GameData.levelsOrder);
 
         this.scrollable.MovmentC = GameData.MenuPage;

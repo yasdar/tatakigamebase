@@ -13,6 +13,33 @@ export let shuffleArray = function shuffleArray(array:any) {
   }
   export let GameObj:Array<any>=[];
 
+  export const OrilevelsOrder:Array<string>=[
+    "Aa", "Bb", "Cc",
+    "Dd", "Ee", "Ff",
+    "Gg", "Hh", "Ii",
+    "Jj", "Kk", "Ll",
+    
+    "Mm", "Nn", "Oo",
+    "Pp", "Qq", "Rr",
+    "Ss", "Tt", "Uu",
+    "Vv", "Ww", "Xx",
+    
+    "Yy", "Zz"];
+
+
+    export const OrilevelsIndex:Array<string>=[
+      "a", "b", "c",
+      "d", "e", "f",
+      "g", "h", "i",
+      "j", "k", "l",
+      
+      "m", "n", "o",
+      "p", "q", "r",
+      "s", "t", "u",
+      "v", "w", "x",
+      
+      "y", "z"];
+
 export let GameData:any = {
   endScreenPlayed:0,
   equa:{case:'',X:0,Y:0,pente:0,ori:0},

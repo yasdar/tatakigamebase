@@ -1,6 +1,6 @@
 import 'phaser';
 
-import {click_Anim, GameData, placeIt, playAudio, stopAudio, tween_Elastic, tween_ElasticY, tween_Rotate, UpDown} from "./utils";
+import {click_Anim, GameData, OrilevelsIndex, OrilevelsOrder, placeIt, playAudio, stopAudio, tween_Elastic, tween_ElasticY, tween_Rotate, UpDown} from "./utils";
 import { Bg } from './objects/Bg';
 
 export class Home extends Phaser.Scene {
@@ -28,8 +28,6 @@ export class Home extends Phaser.Scene {
 
      create(): void {
       console.log('Home Create v2 ---- GameData.Languge',GameData.Languge);
-
-      
 
       this.data_text = this.cache.json.get('_texts')[(GameData.Languge).toLowerCase()];
       console.log('data_text',this.data_text)

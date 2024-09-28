@@ -118,7 +118,10 @@ export class Preload extends Phaser.Scene {
     this.load.audio('Cartoon_Big_Win','./assets/audio/Cartoon Big Win.mp3');
     this.load.audio('Game_Award_3','./assets/audio/Game Award 3.mp3');
     
-
+    this.load.audio('Pop_B','./assets/audio/Pop_B.mp3');
+    this.load.audio('Pop_D','./assets/audio/Pop_D.mp3');
+    this.load.audio('erase_board','./assets/audio/erase_board.mp3');
+    this.load.audio('photo','./assets/audio/photo.mp3');
 
       
       let l:string = GameData.Languge.toLowerCase();
@@ -157,9 +160,10 @@ a.volume = 0.5;*/
     all_audios['Game_Award_3'] =  this.sound.add('Game_Award_3');
 
     
-    
-
-
+    all_audios['Pop_B'] =  this.sound.add('Pop_B');
+    all_audios['Pop_D'] =  this.sound.add('Pop_D');
+    all_audios['erase_board'] =  this.sound.add('erase_board');
+    all_audios['photo'] =  this.sound.add('photo');
 
 
 
